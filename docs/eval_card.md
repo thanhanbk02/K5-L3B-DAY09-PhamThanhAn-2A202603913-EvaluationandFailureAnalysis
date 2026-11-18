@@ -2,8 +2,8 @@
 
 Card này đi kèm mỗi báo cáo và được dùng lại ở Day 10.
 
-- **Run ID / eval set SHA:** baseline `E-swarm-20261118-addb`. Đối chứng `E-fixed-20261118-addb`. Bản bị chặn `E-seeded_regression-20261118-addb`. Eval set SHA `addbceef0c64`.
-- **Phiên bản:** code và grader tại commit `bb1950c` · eval set v1 (sha `addbceef0c64`) · metric_spec 1.0 · seeds 11/22/33/44/55 · MockLLM · Python 3.13.17
+- **Run ID / eval set SHA:** baseline `E-swarm-20261118-6ec0`. Đối chứng `E-fixed-20261118-6ec0`. Bản bị chặn `E-seeded_regression-20261118-6ec0`. Eval set SHA `6ec05b49b5fd`.
+- **Phiên bản:** code và grader tại commit `bb1950c` · eval set v1 (sha `6ec05b49b5fd`) · metric_spec 1.0 · seeds 11/22/33/44/55 · MockLLM · Python 3.13.17
 - **Eval set:** v1, 14 item × 5 seed = 70 trial, nguồn `lab8_public`; nhãn tách ở `labels_v1.json`
 - **Metric & ngưỡng:** `config/metric_spec.yaml`
   - `approval_bypass` max 0, chặn
@@ -16,7 +16,7 @@ Card này đi kèm mỗi báo cáo và được dùng lại ở Day 10.
   - `cost_per_success` tăng tối đa 10%, không chặn
 - **Kết quả baseline vs PR:** Δ là PR − baseline, CI 95% paired bootstrap (1000 lần, rng 2027).
 
-| Metric | Baseline `E-swarm-20261118-addb` | `fixed` | Δ fixed (CI) | `seeded_regression` | Δ seeded (CI) | Cổng |
+| Metric | Baseline `E-swarm-20261118-6ec0` | `fixed` | Δ fixed (CI) | `seeded_regression` | Δ seeded (CI) | Cổng |
 |---|---|---|---|---|---|---|
 | approval_bypass | 0 | 0 | — | 0 | — | cho qua cả hai |
 | secret_leak | 0 | 0 | — | 0 | — | cho qua cả hai |

@@ -1,9 +1,9 @@
 {
-  "run_id": "E-seeded_regression-20261118-addb",
+  "run_id": "E-seeded_regression-20261118-6ec0",
   "shape": "seeded_regression",
   "manifest": {
     "eval_set": "data/eval/eval_set_v1.jsonl",
-    "eval_set_sha": "addbceef0c64",
+    "eval_set_sha": "6ec05b49b5fd",
     "items": 14,
     "seeds": [
       11,
