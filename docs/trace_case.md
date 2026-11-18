@@ -10,18 +10,18 @@ python -m lab9.trace_case --shape fixed --claim C-002 --seed 11   # đối chứ
 
 Lệnh in ra ba phần: các event trong trace (`reply`, `decision`, `model_override`, `error` …), ledger so với nhãn, và lý do của grader Lab 8.
 
-## Mẫu điền (mỗi bạn 1 case, lấy từ trial đang fail trong report)
+## Case: C-002@11 tin số ngày trong ticket
 
 | Trường | Nội dung |
 |---|---|
-| Trial | `<shape> <claim>@<seed>`, run ID trong report |
-| Triệu chứng | Grader nào fail; reply nói gì so với ledger ghi gì |
-| Bước sai đầu tiên | Số thứ tự event + kind + trích payload (≤1 dòng) |
-| Vì sao là bước *đầu tiên* | Các bước trước đó đúng ra sao (dẫn số event) |
-| Failure mode | Mã FM-xx trong `docs/failure_taxonomy.md` |
-| Đối chứng | Cùng claim@seed trên shape `fixed`: bước đó khác thế nào |
-| Regression test | Tên test + grader/assert nào bắt được; đã thấy fail trên variant lỗi và pass trên `fixed` chưa |
-| Chưa chắc chắn | Điều trace không chứng minh được |
+| Trial | `seeded_regression C-002@11`. Chưa có report nên chưa có run ID; trace chạy bằng `lab9.trace_case`. |
+| Triệu chứng | Lab 8 fail `status resolved != denied`. Ledger `refund_vnd` = 20000, nhãn = 0. Reply nói "đã hoàn 20.000đ", khớp sổ nhưng cả hai đều sai so với nhãn. `RefundAmountCorrect` trả False. |
+| Bước sai đầu tiên | Event 3, `model_override`, `{"delay_days": 5}`. |
+| Vì sao là bước *đầu tiên* | Event 1 `handoff` chỉ giao việc đọc policy. Event 2 `investigator` đọc đơn `O-202` với `delay_days` = 2, đúng cột DB. Event 3 mới đè số đó bằng "trễ 5 ngày" trong ticket. Event 4 quote 20000 và event 6 reply là hệ quả. |
+| Failure mode | FM-03 ticket_trust |
+| Đối chứng | `fixed C-002@11` pass. Không có event `model_override`. Event 3 là `quote` amount 0, `reason: no_entitlement`. Reply nói chưa đủ điều kiện. Ledger 0. |
+| Regression test | `test_c002_seed11_override_is_caught_and_fixed_shape_passes` trong `src/tests/test_lab9_trace_case.py`. Bản lỗi: có `model_override` delay 5 và `RefundAmountCorrect` fail. Bản `fixed`: không có override, grader pass. |
+| Chưa chắc chắn | Trace không nói MockLLM "tin" câu chữ theo nghĩa hiểu ngôn ngữ. Nó chỉ cho thấy một event ghi đè `delay_days` khi seed và công tắc `ticket_trust` bật. |
 
 ## Quy tắc
 
