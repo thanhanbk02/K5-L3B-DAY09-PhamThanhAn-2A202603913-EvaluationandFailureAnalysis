@@ -59,6 +59,14 @@ Quy tắc: tiền và phê duyệt luôn chấm bằng code. Judge chỉ dùng c
 - Đổi eval set (thêm item từ trace case) → tăng `eval_set_version`, chạy lại baseline.
 - Đổi ngưỡng hoặc metric → tăng `metric_spec_version`, ghi lý do ở đây. Trên cùng eval set, ngưỡng chỉ được chặt hơn.
 
+## 8. Cổng v2 (không thêm tính năng sản phẩm)
+
+v2 chỉ siết định nghĩa “chạy đúng” sau khi cổng v1 cho lọt ba kiểu bản hỏng.
+
+- **Lát cắt.** `pass_rate` trung bình của `slice_regression` vẫn là 0.9357, trên sàn 0.85, và CI [−0.121, +0.029] chạm phía dương. Cổng chặn vì lát `money_movement` xuống 0.85 (sàn 0.90) và lát `adversarial` xuống 0.9143 (sàn 0.95).
+- **Chập chờn.** `pass_hat_5` sàn 0.80, chọn sau A/A (Δ = 0 trên MockLLM; với LLM thật dải nhiễu rộng hơn và sàn phải nằm ngoài dải đó). `flaky_regression` còn `pass_rate` 0.9143 nhưng `pass_hat_5` chỉ 0.5714. Một bug ở 1/3 seed không phải lý do để hạ sàn này.
+- **Báo cáo làm đẹp.** `integrity_check` từ chối NaN, dòng fail bị xóa, seed được chọn lại, grader trả None, và spec nới ngưỡng hoặc bỏ lát cắt trên cùng eval set. Eval owner giữ nguyên: Phạm Thanh An. Gate v2 exit 1 thì không merge.
+
 ## Phê duyệt
 | Vai trò | Tên | Ngày |
 |---|---|---|
