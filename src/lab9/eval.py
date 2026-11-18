@@ -176,7 +176,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"  not writing {out}: a report with broken graders must not become a baseline")
         return 2
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(rep, ensure_ascii=False, indent=2), encoding="utf-8")
+    out.write_text(json.dumps(rep, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(f"wrote {out}")
     return 0
 

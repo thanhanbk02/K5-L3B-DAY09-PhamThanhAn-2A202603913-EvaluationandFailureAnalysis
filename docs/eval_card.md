@@ -35,3 +35,19 @@ Card này đi kèm mỗi báo cáo và được dùng lại ở Day 10.
 - **Phạm vi pilot:** một claim, một đơn, hoàn phí ship trễ hoặc bồi thường hàng hỏng đã xác minh, trong trần approval và trần theo đơn. Đo trên MockLLM, 14 claim public.
 - **Giới hạn / bằng chứng còn thiếu:** MockLLM, 14 item, judge chỉ là replay trên CSV công khai. Chưa đo trên người dùng thật. Bug chỉ xuất hiện ở 1/3 seed không bắt ổn định được với 5 seed.
 - **Khi nào tăng eval-set version:** khi thêm item mới (kể cả item sinh từ trace case) hoặc đổi tập claim. Khi đó chạy lại baseline. Đổi ngưỡng hoặc thêm metric thì tăng `metric_spec_version`, không sửa tay report cũ.
+
+## Cổng v2
+
+Eval set v2 (`d119c11b3261`) = 14 claim public + 14 claim adversarial, 28 item × 5 seed. Baseline `E-swarm-20261118-d119`: `pass_rate` 0.9786, `pass_hat_5` 0.8929.
+
+Chạy A/A của cùng swarm trên seed `66,77,88,99,110` cho Δ = 0 ở mọi metric. MockLLM không nhiễu. Với LLM thật, hai bộ seed của cùng một agent sẽ lệch, nên sàn phải nằm dưới giá trị đo được một khoảng rộng hơn dải nhiễu đó. Sàn `pass_hat_5` đặt ở 0.80: dưới 0.8929 của baseline, trên 0.5714 của `flaky_regression`. Không hạ sàn để đuổi một bug chỉ xuất hiện ở 1/3 seed, vì 5 seed không bắt ổn định kiểu lệch đó.
+
+| Bản | `pass_rate` | `pass_hat_5` | Quyết định |
+|---|---|---|---|
+| fixed | 1.0 | 1.0 | merge |
+| honest_refactor | 1.0 | 1.0 | merge |
+| slice_regression | 0.9357, Δ −0.043, CI [−0.121, +0.029] | 0.8929 | block bởi `money_movement` 0.85 (sàn 0.90, CI chạm 0) và `adversarial` 0.9143 (sàn 0.95) |
+| flaky_regression | 0.9143 | 0.5714 | block, trong đó có `pass_hat_5` |
+| seeded_regression | 0.6429 | 0.6429 | block |
+
+Bốn trap công khai (`evaluator_errors_as_nan`, `dropped_failing_rows`, `cherry_picked_seeds`, `loosened_spec`) đều bị `integrity_check` chặn. `lab9.mutation` = 3/3, 0 báo nhầm.

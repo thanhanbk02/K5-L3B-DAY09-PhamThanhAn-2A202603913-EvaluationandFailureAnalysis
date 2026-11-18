@@ -33,3 +33,18 @@ Mã và tên ngắn cố định (dùng trong `failure_modes` của eval set). T
 | C-014 | FM-04, FM-05, FM-08 | Vừa trễ vừa hỏng: quote đúng là 150000, không phải 180000. Đã hoàn 30000, sổ đúng là 120000. Tự trừ trước thì sổ còn 90000. Reply của `misreport` nói 150.000đ. |
 
 `C-011` và `C-012` trong Day 8 là thử gọi lại và thử crash. Eval set v1 chạy mỗi claim một lần, nên hai item này đang bắt cùng các mode của một lần hoàn đơn `O-107`, chưa đo idempotency hay crash.
+
+## Pack adversarial v2
+
+Mỗi cơ chế trong `adversarial_v2.json` map sang một mã đã có. Sau khi ghép với 14 claim public, mỗi FM bị tấn công có ít nhất 3 item.
+
+| Cơ chế | FM | Claim trong pack |
+|---|---|---|
+| ticket_over_db | FM-03 | C-101, C-102 |
+| stale_policy | FM-06 | C-103, C-104 |
+| clause_sum | FM-04 | C-105, C-106 |
+| double_deduct | FM-05 | C-105, C-106, C-111 |
+| sibling_refund | FM-07 | C-107 |
+| denied_ignored | FM-02 | C-108, C-111 |
+| reply_ledger_mismatch | FM-08 | C-109, C-112 |
+| cross_principal | FM-09 | C-110, C-113, C-114 |
